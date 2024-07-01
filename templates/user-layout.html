@@ -37,6 +37,17 @@
     {% endblock %}
 </div>
 
+<!-- Flash message -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
 <!-- Footer -->
 <footer>
     <p>&copy; 2024 Reporter Project. All rights reserved.</p>
@@ -52,5 +63,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2FuxXvXkVcKJb4/Uq5tpjB6AnZ1TJjq8"
         crossorigin="anonymous"></script>
+        
+<script>
+    $(document).ready(function() {
+        var flashMessage = $('.flash-message');
+        if (flashMessage.children().length > 0) {
+            flashMessage.fadeIn('fast', function() {
+                setTimeout(function() {
+                    flashMessage.fadeOut('slow');
+                }, 3000); // Display for 3 seconds
+            });
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -97,7 +97,7 @@ def signin():
                 password=request.form["password"]
             )
         except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
+            flash(f"Error: {str(e)}")
             return redirect(url_for("signin"))
         
         user = get_user_by_username(login_data.username)
@@ -107,10 +107,10 @@ def signin():
                 flask_session["user_id"] = user.id  # Using session to store user_id
                 return redirect(url_for('profile'))
             else:
-                flash("Wrong password", "danger")
+                flash("Wrong password")
                 return redirect(url_for("signin"))
         else:
-            flash("User not found", "danger")
+            flash("User not found")
             return redirect(url_for("signin"))
 
 
@@ -129,33 +129,33 @@ def register():
                 check_password=request.form["check_password"]
             )
         except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
+            flash(f"Error: {str(e)}")
             return redirect(url_for("register"))
         
         if register_data.password != register_data.check_password:
-            flash("Passwords do not match", "danger")
+            flash("Passwords do not match")
             return redirect(url_for("register"))
         
         if not re.search(r'[A-Z]', register_data.password):
-            flash("Uh Uh, no uPpercase in the password :D", "danger")
+            flash("Uh Uh, no uPpercase in the password :D")
             return redirect(url_for("register"))
         
         if not re.search(r'\d', register_data.password):
-            flash("Uh Uh, no digits in the password 0-o", "danger")
+            flash("Uh Uh, no digits in the password 0-o")
             return redirect(url_for("register"))
         
         if not re.search(r'[@$!%*?&]', register_data.password):
-            flash("Uh Uh, no ch@racters in the password :)", "danger")
+            flash("Uh Uh, no ch@racters in the password :)")
             return redirect(url_for("register"))
         
         if len(register_data.password) <= 12:
-            flash("too short :p", "danger")
+            flash("too short :p")
             return redirect(url_for("register"))
 
         with Session(engine) as db_session:
             # Check if the username already exists
             if get_user_by_username(register_data.username):
-                flash("No No No, Username already exists", "danger")
+                flash("No No No, Username already exists")
                 return redirect(url_for("register"))
 
             # Hash the password
@@ -164,7 +164,7 @@ def register():
             # Create user in the database
             create_user(db_session, register_data.name, register_data.surname, register_data.email, register_data.username, password_hash)
 
-            flash("Sign up successful! Please log in.", "success")
+            flash("Sign up successful! Please log in.")
             return redirect(url_for("signin"))
 
 
@@ -205,18 +205,18 @@ def patient_entry():
                     age=request.form["age"],
                 )
             except Exception as e:
-                flash(f"Error: {str(e)}", "danger")
+                flash(f"Error: {str(e)}")
                 return redirect(url_for("patient-entry"))
             
             with Session(engine) as db_session:
                 # Check if the patient already exists
                 if get_patient_by_dossier(patient_data.dossier):
-                    flash("a patient with this dossier number already exists", "danger")
+                    flash("a patient with this dossier number already exists")
                     return redirect(url_for("patient-entry"))
                 
             create_patient(db_session, patient_data.dossier, patient_data.name, patient_data.surname, patient_data.gender, patient_data.age)
 
-            flash("New patient added to the database successful!", "success")
+            flash("New patient added to the database successful!")
             return redirect(url_for("profile"))
 
     else:
@@ -239,7 +239,7 @@ def patient_history():
         patient = get_patient_by_dossier(dossier_no)
     
         if not patient:
-            flash("Patient not found", "danger")
+            flash("Patient not found")
             return redirect(url_for("patient_history"))
 
         with Session(engine) as db_session:
@@ -247,7 +247,7 @@ def patient_history():
             reports = get_reports(db_session, patient.id)
 
             if not reports:
-                flash("No reports found for this patient", "danger")
+                flash("No reports found for this patient")
                 return redirect(url_for("patient_history"))
             else:
                 list_reports = []
@@ -315,7 +315,7 @@ def report_generation():
         patient = get_patient_by_dossier(dossier_no)
 
         if not patient:
-            flash("Patient not found", "danger")
+            flash("Patient not found")
             return redirect(url_for("report_generation"))
         
         list_patient = []
@@ -364,7 +364,7 @@ def save_report(report:str, patient:dict):
     # except Exception as e:
     #     print("save_report 2------------------------------------------------")
 
-    #     flash(f"Error: {str(e)}", "danger")
+    #     flash(f"Error: {str(e)}")
     #     return redirect(url_for("report_generation"))
     
     with Session(engine) as db_session:
@@ -376,7 +376,7 @@ def save_report(report:str, patient:dict):
 
         print("save_report 4------------------------------------------------")
 
-        flash("New Report entered!", "success")
+        flash("New Report entered!")
     
 
 def generate_report(objects:dict, patient:dict):
