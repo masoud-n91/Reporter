@@ -1,0 +1,27 @@
+{% extends "user-layout.html" %}
+
+{% block title %}
+    Patient History
+{% endblock %}
+
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mb-4 mt-4">
+            <h2 class="card-title text-center mt-4 mb-4">Patient History</h2>
+            <form id="bmr-form" action="/patient-history" method="POST">
+                <div class="form-group mx-5">
+                    <label for="gender">Dossier Number:</label>
+                    <input type="text" class="form-control" id="dossier" name="dossier" required>
+                </div>
+                <div class="container text-center mb-4">
+                    <button type="submit" class="btn btn-primary">Find</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

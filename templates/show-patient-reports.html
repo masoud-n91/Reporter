@@ -1,0 +1,48 @@
+{% extends "user-layout.html" %}
+
+{% block title %}
+    Report
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-16">
+        <div class="card mt-4" style="width: 50%; margin: 0 auto;">
+            <h2 class="card-title text-center mt-4 mb-4">Patient Information</h2>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ patient[0]["name"] }} {{ patient[0]["surname"] }}</p>
+                <p><strong>Dossier Number:</strong> {{ patient[0]["dossier"] }}</p>
+                <p><strong>Age:</strong> {{ patient[0]["age"] }}</p>
+                <p><strong>Gender:</strong> {{ patient[0]["gender"] }}</p>
+            </div>
+        </div>
+        <div class="card mt-4 mb-4" style="width: 100%;">
+            <h2 class="card-title text-center mt-4 mb-4">Reports</h2>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 50px;">No.</th>
+                            <th scope="col" style="width: 120px;">Date</th>
+                            <th scope="col">Entry</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for index, report in enumerate(reports) %}
+                        <tr>
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ report.report_date[0] }}</td>
+                            <td>{{ report.report_text }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('profile') }}" class="btn btn-danger">  Return  </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

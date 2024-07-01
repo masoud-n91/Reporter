@@ -1,0 +1,100 @@
+{% extends "user-layout.html" %}
+
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-12">
+
+        <div class="card mb-4 mt-4">
+            <h1 class="card-title text-center mt-4">Welcome, {{ username }}!</h1>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-3">
+                    {% if emotions %}
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Faces Detected:</h5>
+                                <ul>
+                                    {% for key, value in emotions.items() %}
+                                        <li>I found a {{ value }} face</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>            
+        
+                <div class="col-md-4 mb-4">
+                    {% if generated_report %}
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">System Report:</h5>
+                                <h6 class="card-subtitle mb-2">{{ generated_report }}</h6>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    {% if bmr %}
+                        <div class="card bg-danger text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Estimated BMR</h5>
+                                <p class="card-text">Your estimated BMR is: {{ bmr }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+        
+            </div>
+
+            <div class="row justify-content-center mt-4 mb-4">
+                <div class="col-md-3 mb-4">
+                    <div class="card text-white bg-primary h-100 custom-card">
+                        <div class="card-body">
+                            <h1><i class="fa-duotone fa-face-viewfinder"></i></h1>
+                            <h5 class="card-title">Enter new patient</h5>
+                            <p class="card-text">
+                                If you want to add a new patient to the database, you can do so here.
+                            </p>
+                            <a href="/patient-entry" class="btn btn-outline-light stretched-link">Enter new patient</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-white bg-success h-100 custom-card">
+                        <div class="card-body">
+                            <h1><i class="fa-duotone fa-object-group"></i></h1>
+                            <h5 class="card-title">Generate report</h5>
+                            <p class="card-text">
+                                If you want to generate a report for an existing patient, you can do so here.
+                            </p>
+                            <a href="/report-generation" class="btn btn-outline-light stretched-link">Generate Report</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-white bg-danger h-100 custom-card">
+                        <div class="card-body">
+                            <h1><i class="fa-duotone fa-child-reaching"></i></h1>
+                            <h5 class="card-title">Patient History</h5>
+                            <p class="card-text">
+                                If you want to view your patient history, you can do so here.
+                            </p>
+                            <a href="/patient-history" class="btn btn-outline-light stretched-link">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

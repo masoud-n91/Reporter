@@ -1,0 +1,60 @@
+{% extends "user-layout.html" %}
+
+{% block title %}
+    AI Face Analysis
+{% endblock %}
+
+
+<!-- Signup Form -->
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Sign Up</h2>
+                    
+                    <!-- Flash Messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Sign Up Form -->
+                    <form action="/patient-entry" method="POST">
+                        <div class="form-group">
+                            <label for="name">Dossier:</label>
+                            <input type="text" class="form-control" id="dossier" name="dossier"  placeholder="U123456789" required>
+                            <br>
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"  placeholder="John" required>
+                            <br>
+                            <label for="surname">Surname:</label>
+                            <input type="text" class="form-control" id="surname" name="surname" placeholder="Doe" required>
+                            <br>
+                            <label for="gender">Gender:</label>
+                            <select class="form-control" id="gender" name="gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <br>
+                            <label for="age">age</label>
+                            <input type="number" class="form-control" id="age" name="age" placeholder="23" min="0" max="150" required>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-block">Enter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+{% endblock %}
