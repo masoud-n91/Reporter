@@ -28,9 +28,15 @@
                             <input type="text" class="form-control" id="username" name="username" placeholder="john_doe" required>
                             <br>
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="A Very Str0ng Passw0rd!" required>
+                            <div class="info-icon" data-toggle="tooltip">
+                                ?
+                                <span class="tooltip-text">Use at least 12 characters including:<br>- One uppercase letter.<br>- One number.<br>- One special character.</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="A Very Str0ng Passw0rd!" required>
+                            </div>
                             <br>
-                            <label for="password">Password</label>
+                            <label for="password">Re-type password</label>
                             <input type="password" class="form-control" id="check_password" name="check_password" placeholder="Repeat your password" required>
                         </div>
                         <br>

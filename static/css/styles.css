@@ -93,7 +93,6 @@ footer p {
     width: 250px;
 }
 
-
 .flash-message {
     position: fixed;
     bottom: 70px;
@@ -155,5 +154,43 @@ footer p {
 
 .chatbot-btn:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+}
+
+.info-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    line-height: 16px;
+    cursor: pointer;
+    position: relative;
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: #f1f1f1;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the icon */
+    left: 50%;
+    margin-left: -100px; /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-align: left;
+}
+
+.info-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
