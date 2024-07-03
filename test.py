@@ -1,55 +1,89 @@
-from fer import FER
-import cv2
-import json
-import numpy as np
-
-# Initialize the FER model
-model = FER()
-
-# Load an image using OpenCV
-image_path = 'uploads/2.jpg'  # Replace with your image file path
-frame = cv2.imread(image_path)
-
-# Detect emotions in the image
-detected = model.detect_emotions(frame)
-
-# Function to convert ndarray to list recursively
-def convert_to_json(obj):
-    if isinstance(obj, np.ndarray):
-        return obj.tolist()
-    elif isinstance(obj, dict):
-        return {key: convert_to_json(value) for key, value in obj.items()}
-    elif isinstance(obj, list):
-        return [convert_to_json(item) for item in obj]
-    else:
-        return obj  # Handle other types if needed
-
-# Convert ndarray and other non-serializable types to JSON serializable types
-detected_serializable = convert_to_json(detected)
-
-# Serialize the detected results to JSON
-json_str = json.dumps(detected_serializable)
-
-# Deserialize JSON back into Python data structures (list of dictionaries)
-list_of_dicts = json.loads(json_str)
-
-# Print the resulting list of dictionaries
-print(list_of_dicts)
-print("type: ", type(list_of_dicts))
-print("type: ", type(list_of_dicts[0]))
-
-print(len(list_of_dicts))
+import pdfplumber
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
 
-eee = {}
 
-for i, e in enumerate(list_of_dicts):
-    emotion = e["emotions"]
-    dominant_emotion = max(emotion, key=emotion.get)
-    eee[str(i)] = dominant_emotion
+# load environment variables
+load_dotenv()
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-print("eee: ", eee)
+genai.configure(api_key=GOOGLE_API_KEY)
 
-print(len(eee))
+# Path to the PDF file
+pdf_path = "uploads/book.pdf"
+
+# Initialize an empty string to hold the text
+full_text = []
+
+# Open the PDF file
+with pdfplumber.open(pdf_path) as pdf:
+    # Iterate through each page in the PDF
+    for page in pdf.pages:
+        # Extract text from the page
+        text = page.extract_text()
+        # Append the text to the full_text variable
+        if text:
+            full_text.append(text)
+
+
+
+generation_config = {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 64,
+    "max_output_tokens": 4096,
+    # "response_mime_type": "application/json",
+}
+
+safety_settings = [
+    {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_NONE",
+    },
+    {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_NONE",
+    },
+    {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_NONE",
+    },
+    {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_NONE",
+    },
+]
+
+
+sys_prompt = f"""
+You are an expert in Pathology and Genetics of the digestive system.
+I will give you a book and ask you questions about it.
+Answer them in the most appropriate way according to the book.
+You have to explain your answer, too. Use the information in the book, give the most correct answer then explain the answer in your own words.
+
+Book: {full_text}
+"""
+
+model = genai.GenerativeModel(
+        model_name="gemini-1.5-pro-latest",
+        safety_settings=safety_settings,
+        generation_config=generation_config,
+        system_instruction=sys_prompt,
+    )
+
+
+chat_session = model.start_chat(history=[])
+
+while True:
+    query = input("Question: ")
+
+    if query == "exit":
+        break
+
+    response = chat_session.send_message(query)
+
+    print(response.text)
 
 
